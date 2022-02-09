@@ -1,10 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import {NavigationContainer} from "@react-navigation/native"
 import StackNavigator from './navigation/StackNavigator';
+import UserContextProvider from "./context/UserContextProvider"
+import PostContextProvider from "./context/PostContextProvider"
 
 export default function App() {
   return (
-    <StackNavigator />
+    <NavigationContainer>
+      <UserContextProvider>
+        <PostContextProvider>
+          <StackNavigator />
+        </PostContextProvider>
+      </UserContextProvider>
+    </NavigationContainer>
   );
 }
 
