@@ -1,29 +1,25 @@
 import React from "react"
-import {View, StyleSheet, ScrollView} from "react-native"
-import Header from "../components/Header"
+import { Text, View, StyleSheet, ScrollView} from "react-native"
 import Stories from "../components/Stories"
 import Post from "../components/Post"
-import BottomNav from "../components/BottomNav"
+import {usePostContext} from "../context/PostContextProvider"
 
 const Home = () => {
+
+    const {posts} = usePostContext()
+
     return(
-        <View style = {styles.container}>
-            <Header />
+        <View style = {{backgroundColor : "#000"}}>
             <ScrollView>
                 <Stories />
-                <Post />
+                <View style = {{flex : 1}}>
+                    {posts.map((post, index) => (
+                        <Post key = {index} post = {post} />
+                    ))}
+                </View>
             </ScrollView>
-            <BottomNav />
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container : {
-        flex : 1,
-        backgroundColor : "#000",
-        marginTop : 25,
-    }
-})
 
 export default Home

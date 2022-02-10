@@ -22,7 +22,6 @@ const Stories = () => {
 
 const styles = StyleSheet.create({
     Stories : {
-        marginTop : 15,
         paddingHorizontal : 10,
         borderBottomColor : "#333",
         paddingBottom : 10,

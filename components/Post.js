@@ -1,39 +1,43 @@
-import React from "react"
+import React, { useState } from "react"
 import {Text, View, StyleSheet, Image, TouchableOpacity } from "react-native"
-import {usePostContext} from "../context/PostContextProvider"
 import { Ionicons } from '@expo/vector-icons';
+import Comment from './Comment';
 
-const Post = () => {
-    const {posts} = usePostContext()
+const Post = ({post}) => {
     
+    const [liked, setLiked] = useState(false)
+    const [expanded, setExpanded] = useState(false)
+
     return (
-        <View style = {styles.Container}>
-            {posts.map((post, index) => (
-                <View key = {index} style = {styles.Post}>
-                    <View style = {styles.PostHeader}>
-                        <TouchableOpacity style = {styles.PostHeaderUser} activeOpacity = {0.8}>
-                            <Image source = {{uri : post.user.image}} style = {styles.PostHeaderImage} />
-                            <Text style = {styles.PostHeaderText}>{post.user.name}</Text>
-                        </TouchableOpacity>
-                        <Text style = {styles.PostHeaderText}>...</Text>
-                    </View>
-                    <Image source = {{uri : post.imgurl}} style = {styles.PostImage}/>
-                    <View style = {styles.PostHeader}>
-                        <View style = {styles.PostHeaderUser}>
-                            <TouchableOpacity activeOpacity = {0.8}><Ionicons style = {styles.PostButtonIcon} name="heart-outline"/></TouchableOpacity>
-                            <TouchableOpacity activeOpacity = {0.8}><Ionicons style = {styles.PostButtonIcon} name="chatbubble-outline"/></TouchableOpacity>
-                            <TouchableOpacity activeOpacity = {0.8}><Ionicons style = {[styles.PostButtonIcon, {transform:[{rotate:"-30deg"}], marginTop : -5}]} name="send-outline"/></TouchableOpacity>
-                        </View>
-                        <TouchableOpacity activeOpacity = {0.8}><Ionicons style = {styles.PostButtonIcon} name="bookmark-outline"/></TouchableOpacity>
-                    </View>
-                    <View style = {{paddingHorizontal : 10}}>
-                        <Text style = {{color : "#FFF", fontWeight : "bold"}}>{post.likes} Likes</Text>
-                        <Text style = {{color : "#FFF"}}><Text style = {{fontWeight : "bold"}}>{post.user.name}</Text> {post.caption}</Text>
-                        {post.comments.length == 1 && <TouchableOpacity activeOpacity={0.8}><Text style = {{color : "grey"}}>View 1 Comment</Text></TouchableOpacity>}
-                        {post.comments.length > 1 && <TouchableOpacity activeOpacity={0.8}><Text style = {{color : "grey"}}>View all {post.comments.length} comments</Text></TouchableOpacity>}
-                    </View>
+        <View style = {styles.Post}>
+            <View style = {styles.PostHeader}>
+                <TouchableOpacity style = {styles.PostHeaderUser} activeOpacity = {0.8}>
+                    <Image source = {{uri : post.user.image}} style = {styles.PostHeaderImage} />
+                    <Text style = {styles.PostHeaderText}>{post.user.name}</Text>
+                </TouchableOpacity>
+                <Text style = {styles.PostHeaderText}>...</Text>
+            </View>
+            <Image source = {{uri : post.imgurl}} style = {styles.PostImage}/>
+            <View style = {styles.PostHeader}>
+                <View style = {styles.PostHeaderUser}>
+                    <TouchableOpacity activeOpacity = {0.8} onPress = {() => setLiked(!liked)}><Ionicons style = {styles.PostButtonIcon} name={liked ? "heart" : "heart-outline"} /></TouchableOpacity>
+                    <TouchableOpacity activeOpacity = {0.8}><Ionicons style = {styles.PostButtonIcon} name="chatbubble-outline"/></TouchableOpacity>
+                    <TouchableOpacity activeOpacity = {0.8}><Ionicons style = {[styles.PostButtonIcon, {transform:[{rotate:"-30deg"}], marginTop : -5}]} name="send-outline"/></TouchableOpacity>
                 </View>
-            ))}
+                <TouchableOpacity activeOpacity = {0.8}><Ionicons style = {styles.PostButtonIcon} name="bookmark-outline"/></TouchableOpacity>
+            </View>
+            <View style = {{paddingHorizontal : 10}}>
+                <Text style = {{color : "#FFF", fontWeight : "bold"}}>{post.likes} Likes</Text>
+                <Text style = {{color : "#FFF"}}><Text style = {{fontWeight : "bold"}}>{post.user.name}</Text> {post.caption}</Text>
+                { expanded && 
+                    post.comments.map((comment, index) => (
+                        <Comment key = {index} comment = {comment} />
+                    ))
+                }
+                {!expanded && post.comments.length == 1 && <TouchableOpacity activeOpacity={0.8} onPress = {() => {setExpanded(true)}}><Text style = {{color : "grey"}}>View 1 Comment</Text></TouchableOpacity>}
+                {!expanded && post.comments.length > 1 && <TouchableOpacity activeOpacity={0.8} onPress = {() => {setExpanded(true)}}><Text style = {{color : "grey"}}>View all {post.comments.length} comments</Text></TouchableOpacity>}
+                {expanded && <TouchableOpacity activeOpacity={0.8}  onPress = {() => {setExpanded(false)}}><Text style = {{color : "grey"}}>Show less</Text></TouchableOpacity>}
+            </View>
         </View>
     )
 }
@@ -43,7 +47,7 @@ const styles = StyleSheet.create({
         flex : 1,
     },
     Post : {
-        marginVertical : 15,
+        marginVertical : 10,
     },
     PostHeader : {
         flexDirection : "row",
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
     },
     PostImage : {
         width : "100%",
-        height : 355,
+        height : 370,
         // height : "100%",
     },
     PostButtonIcon : {

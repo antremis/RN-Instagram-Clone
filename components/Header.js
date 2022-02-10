@@ -8,7 +8,6 @@ const Header = () => {
             <TouchableOpacity activeOpacity={0.8}><Image source = {Logo} style = {styles.Logo} /></TouchableOpacity>
             <View style = {styles.HeaderIcons}>
                 <TouchableOpacity activeOpacity={0.8}><Image source = {{uri : "https://img.icons8.com/fluency-systems-regular/60/ffffff/plus-2-math.png"}} style = {styles.HeaderIcon}/></TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.8}><Image source = {{uri : "https://img.icons8.com/fluency-systems-regular/60/ffffff/like--v1.png"}} style = {styles.HeaderIcon}/></TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8}>
                     <View style = {styles.Badge}><Text style = {styles.BadgeText}>69</Text></View>
                     <Image source = {{uri : "https://img.icons8.com/fluency-systems-regular/60/ffffff/facebook-messenger.png"}} style = {styles.HeaderIcon}/>
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
         display : "flex",
         flexDirection : "row",
         justifyContent : "space-between",
-        width : 110,
+        width : 70,
     },
     HeaderIcon : {
         width : 30,
